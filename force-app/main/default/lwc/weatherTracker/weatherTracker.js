@@ -5,9 +5,6 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 const accFields = ["Account.BillingCity", "Account.BillingState"];
 
 
-
-
-
 export default class WeatherTracker extends LightningElement {
     @api recordId;
     @track isLoading = true;
@@ -151,7 +148,7 @@ export default class WeatherTracker extends LightningElement {
             this.temperature = observation.temperature; // Replace with actual data
             this.humidity = observation.humidity; // Replace with actual data
             this.weatherCondition = observation.weatherCondition === "n/a" ? "Not Provided" : observation.weatherCondition;
-
+            console.log("observation.weatherCondition: ", observation.weatherCondition);
             if(this.weatherCondition != "Not Provided"){
                 this.weatherIconUrl = this.getWeatherIcon(this.weatherCondition);
             }else{
@@ -209,7 +206,7 @@ export default class WeatherTracker extends LightningElement {
             "TS": "wi-thunderstorm",
             "BL": "wi-strong-wind",
             "DR": "wi-cloudy-windy",
-            "FZ": "wi-snowflake-cold"
+            "light snow": "wi-snowflake-cold"
         },
         "cloudIcons": {
             "SKC": "wi-day-sunny",
