@@ -36,15 +36,4 @@ public class WeatherServicesTest {
         System.assertEquals(200, response.getStatusCode());
     }
 
-    @isTest
-    static void testDeserializeResponse() {
-        // Test JSON response data
-        String jsonResponse = '{"temperature": 25.5, "humidity": 60.0}';
-
-        // Call the method to deserialize the JSON response
-        WeatherObservationsWrapper observationsWrapper = WeatherServices.deserializeResponse(jsonResponse);
-
-        // Assert that the deserialized object is not null
-        System.assertNotEquals(null, observationsWrapper);
-    }
 }

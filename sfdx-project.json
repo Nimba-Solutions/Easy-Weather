@@ -1,1 +1,13 @@
-{"packageDirectories": [{"path": "force-app", "default": true}], "namespace": null, "sourceApiVersion": "59.0"}
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "Weather Tracker Demo",
+            "versionName": "1.0.0.NEXT",
+            "versionNumber": "1.0.0.NEXT"
+        }
+    ],
+    "namespace": "misc",
+    "sourceApiVersion": "59.0"
+}
