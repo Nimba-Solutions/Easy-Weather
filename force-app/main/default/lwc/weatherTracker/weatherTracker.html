@@ -66,12 +66,17 @@
 							</div>
 						</template>
 						<template if:false={isLoading}>
-							<div class="flex-container">
+							<div class="flex-container justify-between">
 								<!-- Your other content here -->
 								<div class="slds-p-around_medium">
 									<p><strong>Wind Speed:</strong> {windSpeed}</p>
 									<p><strong>Temperature:</strong> {temperature}°C</p>
 									<p><strong>Humidity:</strong> {humidity}%</p>
+								</div>
+								<div class="slds-p-around_medium slds-p-left_large">
+									<lightning-button-icon icon-name="utility:internal_share"
+                                            alternative-text="Share" title="Share" onclick={shareReport}></lightning-button-icon>
+									
 								</div>
 							</div>
 						</template>
