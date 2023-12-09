@@ -8,7 +8,7 @@
 }
 
 .toggle-container {
-    margin-top: 5px; /* Adjust the margin to move the toggle down by 10px */
+    margin-top: 20px; /* Adjust the margin to move the toggle down by 10px */
 }
 .location-container {
     margin-top: 20px; /* Adjust the margin to move the toggle down by 10px */
@@ -19,10 +19,16 @@
     align-items: center;
 }
 .weather-icon img {
-    width: 32px;
-    height: 32px;
-    margin-right: 10px; /* Adjust space between icon and title */
+    width: 128px;
+    height: 128px;
 }
+
+.weather-icon {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-top: center; /* Vertical centering */
+}
+
 
 .loading-overlay {
     position: absolute;

@@ -1,10 +1,12 @@
 <template>
-	<lightning-card title="Weather Tracker" icon-name="custom:custom63">
-		<div class="flex-container">
+	<lightning-card title={originalQuery} icon-name="custom:custom63">
+		<div>
 			<div class="slds-p-around_medium">
 				<!-- Add an error message div -->
 				<template if:true={errorMessage}>
-					<div class="slds-text-color_error">{errorMessage}</div>
+					<div class="slds-text-color_error">
+						{errorMessage}
+					</div>
 				</template>
 				<div class="flex-container slds-gutters slds-p-left_medium">
 					<lightning-button-icon class="location-container" icon-name="utility:checkin"
@@ -29,61 +31,63 @@
 					</template>
 				</div>
 				<!-- Toggle switch to choose between Lat/Long and Address -->
-				<div class="toggle-container">
+				<div class="flex-container toggle-container">
 					<!-- Added a custom class for styling -->
 					<lightning-input type="toggle" label="" message-toggle-active="Address"
 						message-toggle-inactive="Lat/Long" checked={useAddress} onchange={handleAddressToggle}>
 					</lightning-input>
-				</div>
-
-				<div class="slds-p-top_medium">
 					<lightning-button label="Get Weather Observations" title="Get Weather"
 						onclick={getWeatherObservations}>
 					</lightning-button>
 				</div>
-			</div>
-			<template if:true={weatherObservations}>
-				<div class="slds-p-around_medium">
-					<!-- Display weather observations here -->
-					<lightning-card>
-						<div slot="title">
-							<div class="card-title">
+				<div>
+					<template if:true={weatherObservations}>
+						<div >
+							<!-- Display weather observations here -->
+							<lightning-card>
+								<div class="flex-container">
 								<div class="weather-icon">
-									<template if:true={weatherIconUrl}>
-										<img src={weatherIconUrl} alt="" />
-                                    </template>
-                                    <template if:false={weatherIconUrl}>
-                                        <lightning-icon icon-name="utility:help"
-                                            alternative-text="Weather Condition N/A" title="Weather Condition N/A"></lightning-icon>
-                                    </template>
-								</div>
-								<h1>{originalQuery}</h1>
-							</div>
-						</div>
-						<template if:true={isLoading}>
-							<div class="loading-overlay">
-								<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
-							</div>
-						</template>
-						<template if:false={isLoading}>
-							<div class="flex-container justify-between">
-								<!-- Your other content here -->
-								<div class="slds-p-around_medium">
-									<p><strong>Wind Speed:</strong> {windSpeed}</p>
-									<p><strong>Temperature:</strong> {temperature}°C</p>
-									<p><strong>Humidity:</strong> {humidity}%</p>
-								</div>
-								<div class="slds-p-around_medium slds-p-left_large">
-									<lightning-button-icon icon-name="utility:internal_share"
-                                            alternative-text="Share" title="Share" onclick={shareReport}></lightning-button-icon>
-									
-								</div>
-							</div>
-						</template>
-					</lightning-card>
+									<!-- Check if both condition and cloud icons are null -->
+									<!-- Display message if no weather data is available -->
+									<template if:true={noWeatherData}>
+										<p>No weather data available.</p>
+									</template>
 
+									<!-- Condition Icon -->
+									<template if:true={icons.conditions}>
+										<img src={icons.conditions} alt="Weather Condition Icon" class="weather-icon" />
+									</template>
+
+									<!-- Cloud Icon -->
+									<template if:true={icons.clouds}>
+										<img src={icons.clouds} alt="Cloud Condition Icon" class="weather-icon" />
+									</template>
+								</div>
+								<template if:true={isLoading}>
+									<div class="loading-overlay">
+										<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+									</div>
+								</template>
+								<template if:false={isLoading}>
+									<div class="flex-container justify-between">
+										<!-- Your other content here -->
+										<div class="slds-p-around_medium">
+											<p><strong>Wind Speed:</strong> {windSpeed}</p>
+											<p><strong>Temperature:</strong> {temperature}°C</p>
+											<p><strong>Humidity:</strong> {humidity}%</p>
+										</div>
+										<div class="slds-p-around_medium slds-p-left_large">
+											<lightning-button-icon icon-name="utility:internal_share" alternative-text="Share"
+												title="Share" onclick={shareReport}></lightning-button-icon>
+										</div>
+									</div>
+								</template>
+								</div>
+							</lightning-card>
+						</div>
+					</template>
 				</div>
-			</template>
+			</div>
 		</div>
 	</lightning-card>
 </template>

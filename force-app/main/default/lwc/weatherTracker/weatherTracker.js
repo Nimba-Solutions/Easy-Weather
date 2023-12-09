@@ -6,7 +6,6 @@ import WEATHER_ICONS from '@salesforce/resourceUrl/WeatherIcons';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 const accFields = ["Account.BillingCity", "Account.BillingState"];
 
-
 export default class WeatherTracker extends LightningElement {
     @api recordId;
     subject = 'Weather Report';
@@ -20,12 +19,16 @@ export default class WeatherTracker extends LightningElement {
     @track useUserLocation = false;
     @track weatherObservations;
     @track errorMessage;
-    @track originalQuery;
+    @track originalQuery = "Weather Tracker";
     @track windSpeed;
     @track temperature;
     @track humidity;
     @track weatherCondition;
     @track weatherIconUrl;
+    @track icons = {
+        conditions: null,
+        clouds: null
+    };
 
     @wire(getRecord, { recordId: '$recordId', fields: accFields })
     wiredAccount({ error, data }) {
@@ -99,7 +102,6 @@ export default class WeatherTracker extends LightningElement {
         }
     }
 
-
     handleLatLongChange(event) {
         const label = event.target.name; // Get the label from the name attribute
         this[label.toLowerCase()] = event.target.value;
@@ -142,7 +144,6 @@ export default class WeatherTracker extends LightningElement {
             this.originalQuery = this.useAddress ? this.address : `Lat: ${this.latitude}, Long: ${this.longitude}`;
         }
 
-
         // Validate inputs before making the callout
         if (this.validateInputs()) {
             try {
@@ -174,41 +175,30 @@ export default class WeatherTracker extends LightningElement {
         this.isLoading = false;
     }
 
-
-
     // Define a method to handle the weather response
     handleWeatherResponse(data) {
         // Parse the JSON response and update the component properties for display.
         if (data) {
             const observation = data.weatherObservations[0]; // Assuming there's only one observation
-
+            console.log("Observation: ", data);
             // Extract the information you need and set component properties.
             this.windSpeed = observation.windSpeed; // Replace with actual data
             this.temperature = observation.temperature; // Replace with actual data
             this.humidity = observation.humidity; // Replace with actual data
             this.weatherCondition = observation.weatherCondition === "n/a" ? "Not Provided" : observation.weatherCondition;
-            console.log("observation.weatherCondition: ", observation.weatherCondition);
-            if (this.weatherCondition != "Not Provided") {
-                this.weatherIconUrl = this.getWeatherIcon(this.weatherCondition);
-            } else {
-                this.weatherIconUrl = null;
-            }
-
+            
+            const icons = getWeatherIconUrls(observation, this.weatherIconMappings);
+            this.icons.conditions = icons.conditions; // Update conditions icon URL
+            this.icons.clouds = icons.clouds; // Update clouds icon URL
 
             // Clear any previous error messages
             this.errorMessage = '';
         }
     }
 
-    get weatherObservationsString() {
-        return JSON.stringify(this.weatherObservations, null, 2);
+    get noWeatherData() {
+        return this.icons.conditions === null && this.icons.clouds === null;
     }
-
-    getWeatherIcon(condition) {
-        const iconName = this.weatherIconMappings.conditionIcons[condition] || 'none';
-        return `${WEATHER_ICONS}/wi-icons-svg/${iconName}.svg`;
-    }
-
 
     weatherIconMappings = {
         "conditionIcons": {
@@ -245,7 +235,7 @@ export default class WeatherTracker extends LightningElement {
             "TS": "wi-thunderstorm",
             "BL": "wi-strong-wind",
             "DR": "wi-cloudy-windy",
-            "light snow": "wi-snowflake-cold"
+            "SN": "wi-snowflake-cold"
         },
         "cloudIcons": {
             "SKC": "wi-day-sunny",
@@ -261,4 +251,23 @@ export default class WeatherTracker extends LightningElement {
         }
     };
 
+}
+
+// Standalone function to get weather icon urls
+function getWeatherIconUrls(observation, weatherIconMappings) {
+    console.log("Getting Weather Icons...");
+
+    const conditionIcon = weatherIconMappings.conditionIcons[observation.weatherCondition];
+    const cloudIcon = weatherIconMappings.cloudIcons[observation.cloudsCode];
+    
+    console.log("conditionIcon...", conditionIcon);
+    console.log("cloudIcon...", cloudIcon);
+    
+    const conditionIconUrl = conditionIcon !== undefined ? `${WEATHER_ICONS}/wi-icons-svg/${conditionIcon}.svg` : null;
+    const cloudIconUrl = cloudIcon !== undefined ? `${WEATHER_ICONS}/wi-icons-svg/${cloudIcon}.svg` : null;
+
+    return {
+        conditions: conditionIconUrl,
+        clouds: cloudIconUrl
+    };
 }
