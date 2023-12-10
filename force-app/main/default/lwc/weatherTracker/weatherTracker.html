@@ -29,6 +29,9 @@
 								onchange={handleAddressChange} class={addressClass}></lightning-input>
 						</div>
 					</template>
+					<lightning-button-icon class="location-container" label="Get Weather Observations" title="Get Weather" icon-name="utility:search"
+						onclick={getWeatherObservations}>
+					</lightning-button-icon>
 				</div>
 				<!-- Toggle switch to choose between Lat/Long and Address -->
 				<div class="flex-container toggle-container">
@@ -36,10 +39,9 @@
 					<lightning-input type="toggle" label="" message-toggle-active="Address"
 						message-toggle-inactive="Lat/Long" checked={useAddress} onchange={handleAddressToggle}>
 					</lightning-input>
-					<lightning-button label="Get Weather Observations" title="Get Weather"
-						onclick={getWeatherObservations}>
-					</lightning-button>
 				</div>
+				<hr/>
+
 				<div>
 					<template if:true={weatherObservations}>
 						<div >
@@ -69,14 +71,14 @@
 									</div>
 								</template>
 								<template if:false={isLoading}>
-									<div class="flex-container justify-between">
+									<div class="flex-container justify-between slds-p-around_medium details-container">
 										<!-- Your other content here -->
-										<div class="slds-p-around_medium">
+										<div>
 											<p><strong>Wind Speed:</strong> {windSpeed}</p>
 											<p><strong>Temperature:</strong> {temperature}°C</p>
 											<p><strong>Humidity:</strong> {humidity}%</p>
 										</div>
-										<div class="slds-p-around_medium slds-p-left_large">
+										<div class="slds-p-left_large">
 											<lightning-button-icon icon-name="utility:internal_share" alternative-text="Share"
 												title="Share" onclick={shareReport}></lightning-button-icon>
 										</div>
