@@ -3,15 +3,24 @@
     display: flex;
 }
 
+.lightning-input {
+    width: 100%;
+}
+
 .flex-item {
     margin-right: 10px; /* Adjust margin as needed */
 }
 
 .toggle-container {
-    margin-top: 20px; /* Adjust the margin to move the toggle down by 10px */
+    margin-top: 3px; /* Adjust the margin to move the toggle down by 10px */
 }
 .location-container {
-    margin-top: 20px; /* Adjust the margin to move the toggle down by 10px */
+    margin-top: 19.5px; /* Adjust the margin to move the toggle down by 10px */
+}
+
+.details-container {
+    margin-top: 25;
+    margin-right: 25;
 }
 
 .card-title {
@@ -25,10 +34,9 @@
 
 .weather-icon {
     display: flex;
-    justify-content: center; /* Horizontal centering */
-    align-top: center; /* Vertical centering */
+    justify-content: center;
+    margin-bottom: 15px;
 }
-
 
 .loading-overlay {
     position: absolute;
