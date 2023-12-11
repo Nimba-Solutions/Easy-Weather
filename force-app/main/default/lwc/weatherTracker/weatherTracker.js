@@ -43,6 +43,37 @@ export default class WeatherTracker extends LightningElement {
         this.isLoading = false;
     }
 
+    connectedCallback() {
+        if (this.recordId && this.recordId.startsWith('001')) {
+            // If on an Account record page, wait for the account data to be loaded
+            this.waitForAccountData().then(() => {
+                this.getWeatherObservations();
+            });
+        } else {
+            // If not on an Account record page, use the user's current location
+            this.getUserLocation();
+        }
+    }
+
+    waitForAccountData() {
+        return new Promise((resolve) => {
+            if (this.account) {
+                // If account data is already loaded, resolve immediately
+                resolve();
+            } else {
+                // Poll for the account data to be loaded
+                const intervalId = setInterval(() => {
+                    if (this.account) {
+                        clearInterval(intervalId);
+                        resolve();
+                    }
+                }, 100); // Check every 100 milliseconds
+            }
+        });
+    }
+
+
+
     // Define the shareReport function
     shareReport() {
         let subject = 'Weather Report';
@@ -186,7 +217,7 @@ export default class WeatherTracker extends LightningElement {
             this.temperature = observation.temperature; // Replace with actual data
             this.humidity = observation.humidity; // Replace with actual data
             this.weatherCondition = observation.weatherCondition === "n/a" ? "Not Provided" : observation.weatherCondition;
-            
+
             const icons = getWeatherIconUrls(observation, this.weatherIconMappings);
             this.icons.conditions = icons.conditions; // Update conditions icon URL
             this.icons.clouds = icons.clouds; // Update clouds icon URL
@@ -259,10 +290,10 @@ function getWeatherIconUrls(observation, weatherIconMappings) {
 
     const conditionIcon = weatherIconMappings.conditionIcons[observation.weatherCondition];
     const cloudIcon = weatherIconMappings.cloudIcons[observation.cloudsCode];
-    
+
     console.log("conditionIcon...", conditionIcon);
     console.log("cloudIcon...", cloudIcon);
-    
+
     const conditionIconUrl = conditionIcon !== undefined ? `${WEATHER_ICONS}/wi-icons-svg/${conditionIcon}.svg` : null;
     const cloudIconUrl = cloudIcon !== undefined ? `${WEATHER_ICONS}/wi-icons-svg/${cloudIcon}.svg` : null;
 
