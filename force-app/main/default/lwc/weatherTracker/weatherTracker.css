@@ -22,14 +22,17 @@
 }
 
 .details-container {
-    margin-top: 25;
-    margin-right: 25;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
 }
 
 .card-title {
     display: flex;
     align-items: center;
 }
+
 .weather-icon img {
     width: 128px;
     height: 128px;
@@ -38,7 +41,7 @@
 .weather-icon {
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
+    margin-top: -16px;
 }
 
 .loading-overlay {
