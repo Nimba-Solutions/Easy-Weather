@@ -147,12 +147,15 @@ export default class WeatherTracker extends LightningElement {
     }
 
     validateInputs() {
+        // Clear any previous error messages
+        this.errorMessage = '';
+
         // Validate latitude and longitude if using Lat/Long input
         if (!this.useAddress) {
             if (isNaN(this.latitude) || isNaN(this.longitude)) {
                 this.errorMessage = 'Latitude and Longitude are required.';
                 return false;
-            }
+            } 
         }
 
         // Validate address if using Address input
@@ -161,17 +164,14 @@ export default class WeatherTracker extends LightningElement {
             return false;
         }
 
-        // Clear any previous error messages
-        this.errorMessage = '';
-
         return true;
     }
 
-    async getWeatherObservations() {
+    async getWeatherObservations() {    
         this.isLoading = true;
         if (this.useUserLocation) {
             this.originalQuery = "Current Location";
-        } else {
+        } else { 
             this.originalQuery = this.useAddress ? this.address : `Lat: ${this.latitude}, Long: ${this.longitude}`;
         }
 
@@ -302,3 +302,5 @@ function getWeatherIconUrls(observation, weatherIconMappings) {
         clouds: cloudIconUrl
     };
 }
+
+// HI ERIK!
